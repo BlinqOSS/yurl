@@ -185,23 +185,27 @@ func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, 
 
 	err := json.Unmarshal(result, &reqResp)
 	if err != nil {
-		if len(contentType) > 0 && contentType[0] == "application/pkcs7-mime" {
-			_, err := pkcs7.Parse(result)
-			if err != nil {
-				formatErrors = append(formatErrors, fmt.Errorf("PKCS7 Parse Fail: \n%w", err)) //define this better
+		if len(contentType) > 0 {
+			if contentType[0] == "application/pkcs7-mim" {
+				// XXX: this is probably outdated
+				// TODO: investigate when this content type is phased out or it's still in use
+				_, err := pkcs7.Parse(result)
+				if err != nil {
+					formatErrors = append(formatErrors, fmt.Errorf("PKCS7 Parse Fail: \n%w", err)) //define this better
+					return output, formatErrors
+				}
+			} else if contentType[0] == "application/json" {
+				prettyJSON, err := json.MarshalIndent(result, "", "    ")
+				if err != nil {
+					formatErrors = append(formatErrors, fmt.Errorf("ioutil.ReadAll failed to parse with error: \n%w", err)) //define this better
+					return output, formatErrors
+				}
+				formatErrors = append(formatErrors, fmt.Errorf("JSON Validation: Fail"))
+
+				formatErrors = append(formatErrors, fmt.Errorf("%s", string(prettyJSON)))
+
 				return output, formatErrors
 			}
-		} else {
-			prettyJSON, err := json.MarshalIndent(result, "", "    ")
-			if err != nil {
-				formatErrors = append(formatErrors, fmt.Errorf("io.ReadAll failed to parse with error: \n%w", err)) //define this better
-				return output, formatErrors
-			}
-			output = append(output, fmt.Sprintln("JSON Validation: Fail"))
-
-			output = append(output, fmt.Sprintf("%s\n", string(prettyJSON)))
-
-			return output, formatErrors
 		}
 	}
 
