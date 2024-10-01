@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"go.mozilla.org/pkcs7"
@@ -224,6 +225,20 @@ func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, 
 			}
 		}
 
+		details := reqResp.Applinks.Details
+		appIDs := []string{}
+		for _, d := range details {
+			// TODO: check for `AppID`
+
+			if len(d.AppIDs) > 0 {
+				appIDs = append(appIDs, d.AppIDs...)
+			}
+		}
+		errs := verifyBundleIdentifiersFormat(appIDs)
+		if len(errs) > 0 {
+			formatErrors = append(formatErrors, errs...)
+		}
+
 		prettyJSON, err := json.MarshalIndent(reqResp, "", "    ")
 		if err != nil {
 			formatErrors = append(formatErrors, fmt.Errorf("io.ReadAll failed to parse with error: \n%w", err)) //define this better
@@ -291,6 +306,23 @@ func verifyBundleIdentifierIsPresent(content aasaFile, bundleIdentifier string, 
 	}
 
 	return false
+}
+
+func verifyBundleIdentifiersFormat(bundleIdentifiers []string) (errs []error) {
+	// https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleidentifier
+	validID := regexp.MustCompile(`^[a-zA-Z0-9_\-.]+$`)
+
+	for _, bundleIdentifier := range bundleIdentifiers {
+		if bundleIdentifier == "" {
+			errs = append(errs, errors.New("bundle identifier is empty"))
+		}
+
+		if matched := validID.MatchString(bundleIdentifier); !matched {
+			errs = append(errs, errors.New("bundle identifier can only contain alphanumeric characters, hyphens and periods"))
+		}
+	}
+
+	return errs
 }
 
 type appleCDNDebugHeaders struct {

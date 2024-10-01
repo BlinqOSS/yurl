@@ -58,6 +58,34 @@ func TestEvaluateAASA_Invalid(t *testing.T) {
 			}
 			`),
 		},
+		{
+			name: "app_id-disallowed_characters",
+			fileContent: []byte(`
+			{
+				"applinks": {
+					"details": [
+						{
+							"appIDs": ["a,b"]
+						}
+					]
+				}
+			}
+			`),
+		},
+		{
+			name: "app_ids-one_item_is_empty",
+			fileContent: []byte(`
+			{
+				"applinks": {
+					"details": [
+						{
+							"appIDs": ["", "ABCDE12345.com.example.app"]
+						}
+					]
+				}
+			}
+			`),
+		},
 	}
 
 	for _, c := range cases {
