@@ -10,7 +10,7 @@ yURL is a CLI (Command-Line Interface) and [webapp](https://yurl.chayev.com/) th
 
 Install yURL with [Brew](https://brew.sh/):
 
-```
+```sh
 brew install chayev/tap/yurl
 ```
 
@@ -18,8 +18,8 @@ brew install chayev/tap/yurl
 
 Run the below command:
 
-```
-curl -sSL "https://github.com/chayev/yurl/releases/download/v0.7.3/yurl-v0.7.3-macos-amd64.tar.gz" | sudo tar -xz -C /usr/local/bin yurl
+```sh
+curl -sSL "https://github.com/BlinqOSS/yurl/releases/download/v0.7.3/yurl-v0.7.3-macos-amd64.tar.gz" | sudo tar -xz -C /usr/local/bin yurl
 ```
 
 Note: You will be prompted to enter your password because of the `sudo` command. `0.7.3` may need to be replaced with your desired version.
@@ -30,23 +30,15 @@ Note: You will be prompted to enter your password because of the `sudo` command.
 
 Run the below command:
 
-```
-curl -sSL "https://github.com/chayev/yurl/releases/download/v0.7.3/yurl-v0.7.3-linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/bin yurl
+```sh
+curl -sSL "https://github.com/BlinqOSS/yurl/releases/download/v0.7.3/yurl-v0.7.3-linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/bin yurl
 ```
 
 Note: You will be prompted to enter your password because of the `sudo` command. `0.7.3` may need to be replaced with your desired version.
 
-### Install with Snap (deprecated)
-
-Install yURL with [Snap](https://snapcraft.io/):
-
-```
-sudo snap install yurl
-```
-
 ## Windows Install Instructions
 
-You could download the executable from the [releases](https://github.com/chayev/yurl/releases) page. More instructions coming soon!
+You could download the executable from the [releases](https://github.com/BlinqOSS/yurl/releases) page. More instructions coming soon!
 
 We are planning on supporting [chocolatey](chocolatey.org) package manager as well.
 
@@ -58,19 +50,19 @@ Example:
 
 To validate the Apple App Site Association (AASA) file run the following:
 
-```bash
+```sh
 yurl aasa validate suadeo.onelink.me
 ```
 
 To validate the Android assetlinks.json file run the following:
 
-```bash
+```sh
 yurl assetlink validate suadeo.onelink.me
 ```
 
 ## Contributing
 
-Contributions to yURL of any kind are welcome! Feel free to open [PRs](https://github.com/chayev/yurl/pulls) or an [issue](https://github.com/chayev/yurl/pulls).
+Contributions to yURL of any kind are welcome! Feel free to open [PRs](https://github.com/BlinqOSS/yurl/pulls) or an [issue](https://github.com/BlinqOSS/yurl/pulls).
 
 ### Asking Support Questions
 

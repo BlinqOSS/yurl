@@ -9,7 +9,7 @@ builds:
     goarch:
       - amd64
     ldflags:
-      - -s -w -X github.com/chayev/yurl/cli/cmd.version={{ .Version }} -extldflags "-static"
+      - -s -w -X github.com/BlinqOSS/yurl/cli/cmd.version={{ .Version }} -extldflags "-static"
 
 archives:
   - format: tar.gz
@@ -23,28 +23,28 @@ archives:
     replacements:
       darwin: macos
 
-nfpms:
-  - file_name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    homepage: "https://yurl.chayev.com"
-    maintainer: "Michael Ibragimchayev <michael@chayev.com>"
-    description: "Universal Links / AASA File Validator."
-    license: MIT
-    formats:
-      - deb
-    bindir: /usr/bin
+# nfpms:
+#   - file_name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+#     homepage: "https://yurl.chayev.com"
+#     maintainer: "Michael Ibragimchayev <michael@chayev.com>"
+#     description: "Universal Links / AASA File Validator."
+#     license: MIT
+#     formats:
+#       - deb
+#     bindir: /usr/bin
 
-brews:
-  - tap:
-      owner: chayev
-      name: homebrew-tap
-    commit_author:
-      name: "Michael Ibragimchayev (chayev)"
-      email: "michael@chayev.com"
-    folder: Formula
-    homepage: "https://github.com/chayev/yurl"
-    description: "Universal Links / AASA File Validator."
-    test: |
-      system "#{bin}/yurl", "help"
+# brews:
+#   - tap:
+#       owner: chayev
+#       name: homebrew-tap
+#     commit_author:
+#       name: "Michael Ibragimchayev (chayev)"
+#       email: "michael@chayev.com"
+#     folder: Formula
+#     homepage: "https://github.com/BlinqOSS/yurl"
+#     description: "Universal Links / AASA File Validator."
+#     test: |
+#       system "#{bin}/yurl", "help"
 
 checksum:
   name_template: "{{ .ProjectName }}-v{{ .Version }}-checksums.txt"

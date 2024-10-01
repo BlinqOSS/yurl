@@ -20,67 +20,67 @@
       content="yURL allows you to validate whether a URL is properly configured for Universal Links and App Links. This allows you to check if the apple-app-site-association and assetlinks.json on a website is properly formatted for deep links as defined by Apple and Google."
     />
     <script>
-      if (window.location.hostname === 'yurl.chayev.com') {
+      if (window.location.hostname === "yurl.chayev.com") {
         !(function () {
-          var analytics = (window.analytics = window.analytics || [])
+          var analytics = (window.analytics = window.analytics || []);
           if (!analytics.initialize)
             if (analytics.invoked)
               window.console &&
                 console.error &&
-                console.error('Segment snippet included twice.')
+                console.error("Segment snippet included twice.");
             else {
-              analytics.invoked = !0
+              analytics.invoked = !0;
               analytics.methods = [
-                'trackSubmit',
-                'trackClick',
-                'trackLink',
-                'trackForm',
-                'pageview',
-                'identify',
-                'reset',
-                'group',
-                'track',
-                'ready',
-                'alias',
-                'debug',
-                'page',
-                'once',
-                'off',
-                'on',
-                'addSourceMiddleware',
-                'addIntegrationMiddleware',
-                'setAnonymousId',
-                'addDestinationMiddleware',
-              ]
+                "trackSubmit",
+                "trackClick",
+                "trackLink",
+                "trackForm",
+                "pageview",
+                "identify",
+                "reset",
+                "group",
+                "track",
+                "ready",
+                "alias",
+                "debug",
+                "page",
+                "once",
+                "off",
+                "on",
+                "addSourceMiddleware",
+                "addIntegrationMiddleware",
+                "setAnonymousId",
+                "addDestinationMiddleware",
+              ];
               analytics.factory = function (e) {
                 return function () {
-                  var t = Array.prototype.slice.call(arguments)
-                  t.unshift(e)
-                  analytics.push(t)
-                  return analytics
-                }
-              }
+                  var t = Array.prototype.slice.call(arguments);
+                  t.unshift(e);
+                  analytics.push(t);
+                  return analytics;
+                };
+              };
               for (var e = 0; e < analytics.methods.length; e++) {
-                var key = analytics.methods[e]
-                analytics[key] = analytics.factory(key)
+                var key = analytics.methods[e];
+                analytics[key] = analytics.factory(key);
               }
               analytics.load = function (key, e) {
-                var t = document.createElement('script')
-                t.type = 'text/javascript'
-                t.async = !0
+                var t = document.createElement("script");
+                t.type = "text/javascript";
+                t.async = !0;
                 t.src =
-                  'https://cdn.segment.com/analytics.js/v1/' +
+                  "https://cdn.segment.com/analytics.js/v1/" +
                   key +
-                  '/analytics.min.js'
-                var n = document.getElementsByTagName('script')[0]
-                n.parentNode.insertBefore(t, n)
-                analytics._loadOptions = e
-              }
-              analytics.SNIPPET_VERSION = '4.13.1'
-              analytics.load('3cHlWjwEGL7unR570GHLj6wQBQtbyLTk')
-              analytics.page()
+                  "/analytics.min.js";
+                var n = document.getElementsByTagName("script")[0];
+                n.parentNode.insertBefore(t, n);
+                analytics._loadOptions = e;
+              };
+              analytics.SNIPPET_VERSION = "4.13.1";
+              analytics.load("3cHlWjwEGL7unR570GHLj6wQBQtbyLTk");
+              analytics.page();
             }
-        })()
+        })();
       }
     </script>
   </head>
@@ -95,7 +95,7 @@
           </a>
         </div>
         <a
-          href="https://www.github.com/chayev/yurl"
+          href="https://www.github.com/BlinqOSS/yurl"
           target="_blank"
           rel="noopener"
           title="Go to the GitHub project"
@@ -187,36 +187,36 @@
     </footer>
   </body>
   <script>
-    const copyLinkBtn = document.querySelector('.copy')
-    copyLinkBtn.addEventListener('click', () => {
+    const copyLinkBtn = document.querySelector(".copy");
+    copyLinkBtn.addEventListener("click", () => {
       navigator.clipboard
         .writeText(window.location.href)
         .then(async function () {
-          console.log('Copying to clipboard was successful!')
+          console.log("Copying to clipboard was successful!");
           const loadingState =
-            '<img class="animate-copy" src="../static/img/loading.svg" height="30" width="30" alt="Loading Icon" />'
-          const copiedState = '<div class="animate-copy">Copied!</div>'
+            '<img class="animate-copy" src="../static/img/loading.svg" height="30" width="30" alt="Loading Icon" />';
+          const copiedState = '<div class="animate-copy">Copied!</div>';
           const resetState =
-            '<div class="animate-copy-fadeIn">Copy Results</div>'
+            '<div class="animate-copy-fadeIn">Copy Results</div>';
           await new Promise((resolve) =>
             setTimeout(() => {
-              copyLinkBtn.style.padding = '2px 8px'
-              copyLinkBtn.innerHTML = loadingState
-              resolve()
+              copyLinkBtn.style.padding = "2px 8px";
+              copyLinkBtn.innerHTML = loadingState;
+              resolve();
             }, 400)
-          )
+          );
           await new Promise((resolve) =>
             setTimeout(() => {
-              copyLinkBtn.style.padding = '8px'
-              copyLinkBtn.innerHTML = copiedState
-              resolve()
+              copyLinkBtn.style.padding = "8px";
+              copyLinkBtn.innerHTML = copiedState;
+              resolve();
             }, 700)
-          )
+          );
           setTimeout(() => {
-            copyLinkBtn.innerHTML = resetState
-          }, 700)
+            copyLinkBtn.innerHTML = resetState;
+          }, 700);
         })
-        .catch((err) => console.error('Could not copy text: ', err))
-    })
+        .catch((err) => console.error("Could not copy text: ", err));
+    });
   </script>
 </html>

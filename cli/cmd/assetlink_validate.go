@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/chayev/yurl/yurllib"
+	"github.com/BlinqOSS/yurl/yurllib"
 
 	"github.com/spf13/cobra"
 )

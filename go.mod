@@ -1,4 +1,4 @@
-module github.com/chayev/yurl
+module github.com/BlinqOSS/yurl
 
 go 1.19
 
