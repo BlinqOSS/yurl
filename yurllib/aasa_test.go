@@ -10,8 +10,6 @@ import (
 )
 
 func TestEvaluateAASA(t *testing.T) {
-	t.Skipf("FIXME: this test should pass")
-
 	jsonFile, err := os.Open("testdata/apple-app-site-association")
 	if err != nil {
 		t.Fatal("failed to open test file")

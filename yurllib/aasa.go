@@ -32,10 +32,10 @@ type detail struct {
 }
 
 type appLinks struct {
-	Apps                  []string               `json:"apps,omitempty"`
-	Details               []detail               `json:"details"`
-	SubstitutionVariables []substitutionVariable `json:"substitutionVariables,omitempty"`
-	Defaults              defaultStruct          `json:"defaults,omitempty"`
+	Apps                  []string             `json:"apps,omitempty"`
+	Details               []detail             `json:"details"`
+	SubstitutionVariables substitutionVariable `json:"substitutionVariables,omitempty"`
+	Defaults              defaultStruct        `json:"defaults,omitempty"`
 }
 
 type aasaFile struct {
