@@ -104,7 +104,7 @@ func CheckAASADomain(inputURL string, bundleIdentifier string, teamIdentifier st
 	if allowUnencrypted {
 		// Try to decode the JSON right away (this assumes the file is not encrypted)
 		// If it's not encrypted, we'll just return it
-		messages, errors := evaluateAASA(result, contentType, bundleIdentifier, teamIdentifier, false)
+		messages, errors := evaluateAASA(result, contentType, bundleIdentifier, teamIdentifier)
 		if len(errors) > 0 {
 			output = append(output, fmt.Sprintln("\nErrors:"))
 			for _, e := range errors {
@@ -177,8 +177,7 @@ func loadAASAContents(domain string) (*http.Response, []string, []error) {
 	return nil, output, formatErrors
 }
 
-func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, teamIdentifier string, encrypted bool) ([]string, []error) {
-
+func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, teamIdentifier string) ([]string, []error) {
 	var output []string
 	var formatErrors []error
 
