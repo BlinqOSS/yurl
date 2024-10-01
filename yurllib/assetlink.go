@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -53,17 +53,17 @@ func CheckAssetLinkDomain(inputURL string, packageInput string, fingerprintInput
 	output = append(output, fmt.Sprintf("Content-type: \t\t\t  %s \n", contentType))
 
 	if len(contentType) == 0 {
-		output = append(output, fmt.Sprint("\nEmpty content type. Expecting [application/json]. Please update and test again. \n"))
+		output = append(output, "\nEmpty content type. Expecting [application/json]. Please update and test again. \n")
 		return output
 	}
 
 	if !strings.Contains(contentType[0], "application/json") {
-		output = append(output, fmt.Sprint("\nInvalid content type. Expecting [application/json]. Please update and test again. \n"))
-		output = append(output, fmt.Sprint("\nIf you believe this error is invalid, please open an issue on github or email support@chayev.com and we will investigate."))
+		output = append(output, "\nInvalid content type. Expecting [application/json]. Please update and test again. \n")
+		output = append(output, "\nIf you believe this error is invalid, please open an issue on github or email support@chayev.com and we will investigate.")
 		return output
 	}
 
-	result, err := ioutil.ReadAll(rawResult.Body)
+	result, err := io.ReadAll(rawResult.Body)
 	if err != nil {
 		return output
 	}
@@ -132,7 +132,7 @@ func evaluateAssetLink(result []byte, packageInput string, fingerprintInput stri
 	if err != nil {
 		prettyJSON, err := json.MarshalIndent(result, "", "    ")
 		if err != nil {
-			formatErrors = append(formatErrors, fmt.Errorf("ioutil.ReadAll failed to parse with error: \n%w", err)) //define this better
+			formatErrors = append(formatErrors, fmt.Errorf("io.ReadAll failed to parse with error: \n%w", err)) //define this better
 			return output, formatErrors
 		}
 		output = append(output, fmt.Sprintln("JSON Validation: Fail"))
@@ -148,7 +148,7 @@ func evaluateAssetLink(result []byte, packageInput string, fingerprintInput stri
 
 	prettyJSON, err := json.MarshalIndent(reqResp, "", "    ")
 	if err != nil {
-		formatErrors = append(formatErrors, fmt.Errorf("ioutil.ReadAll failed to parse with error: \n%w", err)) //define this better
+		formatErrors = append(formatErrors, fmt.Errorf("io.ReadAll failed to parse with error: \n%w", err)) //define this better
 		return output, formatErrors
 	}
 

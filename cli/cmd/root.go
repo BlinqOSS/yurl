@@ -7,8 +7,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cfgFile string
-
 var rootCmd = &cobra.Command{
 	Use:   "yurl",
 	Short: "yURL: Validate whether your URL is enabled properly",

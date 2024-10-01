@@ -20,9 +20,9 @@ func getDomain(input string) (string, []string) {
 	scheme := parsedURL.Scheme
 
 	if scheme != "https" && scheme != "" {
-		output = append(output, fmt.Sprintf("WARNING: The URL must use HTTPS, changing the protocol to HTTPS instead. \n\n"))
+		output = append(output, "WARNING: The URL must use HTTPS, changing the protocol to HTTPS instead. \n\n")
 	}
-	
+
 	parsedURL.Scheme = "https"
 	parsedURL, err = url.Parse(parsedURL.String())
 	if err != nil {
@@ -55,8 +55,8 @@ func CompareStrings(a, b []string) bool {
 	return true
 }
 
-func OutputStatus(output []string, name string, pass bool) []string{
-	if pass {		
+func OutputStatus(output []string, name string, pass bool) []string {
+	if pass {
 		return append(output, fmt.Sprintf("%s: Pass\n", name))
 	} else {
 		return append(output, fmt.Sprintf("%s: Fail\n", name))

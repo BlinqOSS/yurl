@@ -1,6 +1,6 @@
 module github.com/BlinqOSS/yurl
 
-go 1.19
+go 1.23
 
 require (
 	github.com/magefile/mage v1.14.0
