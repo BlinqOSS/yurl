@@ -227,7 +227,7 @@ func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, 
 			} else if contentType[0] == "application/json" {
 				prettyJSON, err := json.MarshalIndent(result, "", "    ")
 				if err != nil {
-					formatErrors = append(formatErrors, fmt.Errorf("ioutil.ReadAll failed to parse with error: \n%w", err)) //define this better
+					formatErrors = append(formatErrors, fmt.Errorf("JSON failed to parse with error: \n%w", err)) //define this better
 					return output, formatErrors
 				}
 				formatErrors = append(formatErrors, fmt.Errorf("JSON Validation: Fail"))
