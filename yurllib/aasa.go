@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
+	"regexp"
 	"strings"
 
 	"go.mozilla.org/pkcs7"
@@ -32,10 +34,10 @@ type detail struct {
 }
 
 type appLinks struct {
-	Apps                  []string               `json:"apps,omitempty"`
-	Details               []detail               `json:"details"`
-	SubstitutionVariables []substitutionVariable `json:"substitutionVariables,omitempty"`
-	Defaults              defaultStruct          `json:"defaults,omitempty"`
+	Apps                  []string             `json:"apps,omitempty"`
+	Details               []detail             `json:"details"`
+	SubstitutionVariables substitutionVariable `json:"substitutionVariables,omitempty"`
+	Defaults              defaultStruct        `json:"defaults,omitempty"`
 }
 
 type aasaFile struct {
@@ -129,6 +131,34 @@ func CheckAASADomain(inputURL string, bundleIdentifier string, teamIdentifier st
 	return output
 }
 
+// CheckAASAFile validates the local AASA file
+func CheckAASAFile(filePath string) (output []string, err error) {
+	f, err := os.Open(filePath)
+	if err != nil {
+		return output, err
+	}
+
+	fileContent, err := io.ReadAll(f)
+	if err != nil {
+		return output, err
+	}
+
+	// TODO: do we need all of these?
+	contentType := []string{"application/json"}
+	bundleIdentifier := ""
+	teamIdentifier := ""
+
+	output, errors := evaluateAASA(fileContent, contentType, bundleIdentifier, teamIdentifier)
+	if len(errors) > 0 {
+		output = append(output, fmt.Sprintln("\nErrors:"))
+		for _, e := range errors {
+			output = append(output, fmt.Sprintf("  - %s\n", e))
+		}
+	}
+
+	return output, err
+}
+
 func loadAASAContents(domain string) (*http.Response, []string, []error) {
 
 	var output []string
@@ -185,23 +215,27 @@ func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, 
 
 	err := json.Unmarshal(result, &reqResp)
 	if err != nil {
-		if len(contentType) > 0 && contentType[0] == "application/pkcs7-mime" {
-			_, err := pkcs7.Parse(result)
-			if err != nil {
-				formatErrors = append(formatErrors, fmt.Errorf("PKCS7 Parse Fail: \n%w", err)) //define this better
+		if len(contentType) > 0 {
+			if contentType[0] == "application/pkcs7-mime" {
+				// XXX: this is probably outdated
+				// TODO: investigate when this content type is phased out or it's still in use
+				_, err := pkcs7.Parse(result)
+				if err != nil {
+					formatErrors = append(formatErrors, fmt.Errorf("PKCS7 Parse Fail: \n%w", err)) //define this better
+					return output, formatErrors
+				}
+			} else if contentType[0] == "application/json" {
+				prettyJSON, err := json.MarshalIndent(result, "", "    ")
+				if err != nil {
+					formatErrors = append(formatErrors, fmt.Errorf("JSON failed to parse with error: \n%w", err)) //define this better
+					return output, formatErrors
+				}
+				formatErrors = append(formatErrors, fmt.Errorf("JSON Validation: Fail"))
+
+				formatErrors = append(formatErrors, fmt.Errorf("%s", string(prettyJSON)))
+
 				return output, formatErrors
 			}
-		} else {
-			prettyJSON, err := json.MarshalIndent(result, "", "    ")
-			if err != nil {
-				formatErrors = append(formatErrors, fmt.Errorf("io.ReadAll failed to parse with error: \n%w", err)) //define this better
-				return output, formatErrors
-			}
-			output = append(output, fmt.Sprintln("JSON Validation: Fail"))
-
-			output = append(output, fmt.Sprintf("%s\n", string(prettyJSON)))
-
-			return output, formatErrors
 		}
 	}
 
@@ -218,6 +252,20 @@ func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, 
 			} else {
 				output = append(output, fmt.Sprintln("Team/Bundle availability: Fail"))
 			}
+		}
+
+		details := reqResp.Applinks.Details
+		appIDs := []string{}
+		for _, d := range details {
+			// TODO: check for `AppID`
+
+			if len(d.AppIDs) > 0 {
+				appIDs = append(appIDs, d.AppIDs...)
+			}
+		}
+		errs := verifyBundleIdentifiersFormat(appIDs)
+		if len(errs) > 0 {
+			formatErrors = append(formatErrors, errs...)
 		}
 
 		prettyJSON, err := json.MarshalIndent(reqResp, "", "    ")
@@ -287,6 +335,23 @@ func verifyBundleIdentifierIsPresent(content aasaFile, bundleIdentifier string, 
 	}
 
 	return false
+}
+
+func verifyBundleIdentifiersFormat(bundleIdentifiers []string) (errs []error) {
+	// https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleidentifier
+	validID := regexp.MustCompile(`^[a-zA-Z0-9_\-.]+$`)
+
+	for _, bundleIdentifier := range bundleIdentifiers {
+		if bundleIdentifier == "" {
+			errs = append(errs, errors.New("bundle identifier is empty"))
+		}
+
+		if matched := validID.MatchString(bundleIdentifier); !matched {
+			errs = append(errs, errors.New("bundle identifier can only contain alphanumeric characters, hyphens and periods"))
+		}
+	}
+
+	return errs
 }
 
 type appleCDNDebugHeaders struct {

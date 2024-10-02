@@ -1,0 +1,48 @@
+{
+    "applinks": {
+        "apps": [],
+        "substitutionVariables": {
+            "page": [
+                "/",
+                "/a/*",
+                "/business",
+                "/?*/*"
+            ]
+        },
+        "details": [
+            {
+                "appID": "ABCDE12345.com.example.app",
+                "components": [
+                    {
+                        "/": "/p/*"
+                    },
+                    {
+                        "/": "/",
+                        "exclude": true
+                    },
+                    {
+                        "/": "/business",
+                        "exclude": true
+                    },
+                    {
+                        "/": "/?*/?*",
+                        "exclude": true
+                    },
+                    {
+                        "/": "*"
+                    }
+                ]
+            }
+        ]
+    },
+    "webcredentials": {
+        "apps": [
+            "ABCDE12345.com.example.app"
+        ]
+    },
+    "appclips": {
+        "apps": [
+            "ABCDE12345.com.example.MyApp.Clip"
+        ]
+    }
+}
