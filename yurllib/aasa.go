@@ -216,7 +216,7 @@ func evaluateAASA(result []byte, contentType []string, bundleIdentifier string, 
 	err := json.Unmarshal(result, &reqResp)
 	if err != nil {
 		if len(contentType) > 0 {
-			if contentType[0] == "application/pkcs7-mim" {
+			if contentType[0] == "application/pkcs7-mime" {
 				// XXX: this is probably outdated
 				// TODO: investigate when this content type is phased out or it's still in use
 				_, err := pkcs7.Parse(result)
