@@ -26,7 +26,7 @@ var validateAASACmd = &cobra.Command{
 				fmt.Print(item)
 			}
 
-			return
+			cobra.CheckErr(err)
 		} else {
 			output := yurllib.CheckAASADomain(args[0], "", "", true)
 
