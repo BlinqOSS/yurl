@@ -1,0 +1,4 @@
+issues:
+  exclude-rules:
+    - path: yurllib/aasa.go
+      text: "SA9003: empty branch"
