@@ -148,12 +148,13 @@ func CheckAASAFile(filePath string) (output []string, err error) {
 	bundleIdentifier := ""
 	teamIdentifier := ""
 
-	output, errors := evaluateAASA(fileContent, contentType, bundleIdentifier, teamIdentifier)
-	if len(errors) > 0 {
+	output, errs := evaluateAASA(fileContent, contentType, bundleIdentifier, teamIdentifier)
+	if len(errs) > 0 {
 		output = append(output, fmt.Sprintln("\nErrors:"))
-		for _, e := range errors {
+		for _, e := range errs {
 			output = append(output, fmt.Sprintf("  - %s\n", e))
 		}
+		return output, errors.New("AASA validation failed")
 	}
 
 	return output, err
